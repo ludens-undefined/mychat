@@ -1,9 +1,8 @@
 package main
 
 import (
-	_ "gin/models"
+	_ "gin/model"
 	"gin/routers"
-
 	"github.com/gin-gonic/gin"
 )
 
