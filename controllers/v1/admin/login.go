@@ -2,15 +2,16 @@ package admin
 
 import (
 	"gin/model"
-	"github.com/gin-gonic/gin"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Login(gc *gin.Context) {
 	//account := gc.Param("account")
 	//password := gc.Param("password")
 	paramId := gc.PostForm("id")
-	id, err := strconv.Atoi(paramId)
+	id, _ := strconv.Atoi(paramId)
 	v, err := model.BusinessModel().GetBusinessById(id)
 
 	if err == nil {

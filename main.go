@@ -3,6 +3,7 @@ package main
 import (
 	_ "gin/model"
 	"gin/routers"
+
 	"github.com/gin-gonic/gin"
 )
 

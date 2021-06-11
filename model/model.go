@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -71,7 +72,7 @@ func (obj *_BaseMgr) SetIsRelated(b bool) {
 
 // New new gorm.新gorm
 func (obj *_BaseMgr) New() *gorm.DB {
-	return obj.DB.Session(&gorm.Session{WithConditions: false, Context: obj.ctx})
+	return obj.DB.Session(&gorm.Session{Context: obj.ctx})
 }
 
 // OpenRelated 打开全局预加载

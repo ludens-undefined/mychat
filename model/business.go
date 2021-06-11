@@ -15,7 +15,7 @@ type Business struct {
 	Avatar     string `gorm:"column:avatar;type:varchar(255);not null" json:"avatar"`                     // 头像
 	Password   string `gorm:"column:password;type:varchar(255)" json:"password"`                          // 用户登录密码
 	Unionid    string `gorm:"column:unionid;type:varchar(255)" json:"unionid"`
-	WxBinding  int   `gorm:"column:wx_binding;type:tinyint(1)" json:"wx_binding"`                // 微信绑定 1已绑定 2未绑定
+	WxBinding  int    `gorm:"column:wx_binding;type:tinyint(1)" json:"wx_binding"`                // 微信绑定 1已绑定 2未绑定
 	WxAvatar   string `gorm:"column:wx_avatar;type:varchar(500);not null" json:"wx_avatar"`       // 商户微信头像
 	WxNickname string `gorm:"column:wx_nickname;type:varchar(100);not null" json:"wx_nickname"`   // 商户微信昵称
 	ShareTitle string `gorm:"column:share_title;type:varchar(255)" json:"share_title"`            // 分享标题
@@ -28,7 +28,7 @@ type Business struct {
 	Status     bool   `gorm:"column:status;type:tinyint(1)" json:"status"`                        // 状态 1启用 2禁用
 	Pid        int    `gorm:"column:pid;type:int(11);not null" json:"pid"`                        // 推荐人
 	IsDelete   bool   `gorm:"column:is_delete;type:tinyint(1)" json:"is_delete"`                  // 状态 1启用 2删除
-	}
+}
 
 func (t *Business) TableName() string {
 	return "goouc_xmf_business"
@@ -38,11 +38,12 @@ type _BusinessModel struct {
 	*_BaseMgr
 }
 
-// 获取表对象
+// BusinessModel 获取表对象
 func BusinessModel() *_BusinessModel {
 	if db == nil {
 		panic(fmt.Errorf("GooucXmfActivityFormMgr need init by db"))
 	}
+
 	ctx, cancel := context.WithCancel(context.Background())
 	return &_BusinessModel{_BaseMgr: &_BaseMgr{DB: db, isRelated: globalIsRelated, ctx: ctx, cancel: cancel, timeout: -1}}
 }
@@ -54,7 +55,7 @@ func (obj *_BusinessModel) GetBusinessById(id int) (result Business, err error) 
 	return
 }
 
-// GetBusinessById retrieves Business by Id. Returns error if
+// GetsBusiness GetBusinessById retrieves Business by Id. Returns error if
 // Id doesn't exist
 func (obj *_BusinessModel) GetsBusiness() (result Business, err error) {
 	err = obj.DB.Debug().Find(&result).Error
