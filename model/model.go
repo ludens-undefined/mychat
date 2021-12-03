@@ -1,14 +1,14 @@
 package model
 
 import (
-	"fmt"
-
-	"github.com/spf13/viper"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-
 	"context"
+	"fmt"
 	"time"
+
+	"github.com/go-sql-driver/mysql"
+	"github.com/spf13/viper"
+	gmysql "gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 var globalIsRelated = true // 全局预加载
@@ -24,6 +24,21 @@ type _BaseMgr struct {
 	isRelated bool
 }
 
+func generateMysqlDsn(config map[string]string) (dsn string) {
+	dsnConfig := mysql.Config{
+		User:                 config["username"],
+		Passwd:               config["password"],
+		Net:                  "tcp",
+		Addr:                 config["host"] + ":" + config["port"],
+		DBName:               config["database"],
+		Params:               map[string]string{"charset": config["charset"]},
+		Loc:                  time.Local,
+		ParseTime:            true,
+		AllowNativePasswords: true,
+	}
+	return dsnConfig.FormatDSN()
+}
+
 func init() {
 	viper.SetConfigName("app")
 	viper.SetConfigType("yaml")
@@ -31,15 +46,22 @@ func init() {
 	err := viper.ReadInConfig()
 
 	if err != nil { // Handle errors reading the config file
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		panic(fmt.Errorf("fatal error config file: %s", err))
 	}
 
 	var dsn string
-	dsn = viper.GetString("username") + ":" + viper.GetString("password") + "@tcp(" + viper.GetString("host") + ":" + viper.GetString("port") + ")/" + viper.GetString("database") + "?charset=" + viper.GetString("charset") + "&parseTime=True&loc=Local"
-	db, _ = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	if viper.IsSet("mysql") {
+		dsn = generateMysqlDsn(viper.GetStringMapString("mysql"))
+	}
+
+	db, err = gorm.Open(gmysql.Open(dsn), &gorm.Config{})
+	if err != nil { // Handle errors reading the config file
+		panic(fmt.Errorf("fatal error config file: %s", err))
+	}
 }
 
-// SetCtx set context
+// SetTimeOut SetCtx set context
 func (obj *_BaseMgr) SetTimeOut(timeout time.Duration) {
 	obj.ctx, obj.cancel = context.WithTimeout(context.Background(), timeout)
 	obj.timeout = timeout

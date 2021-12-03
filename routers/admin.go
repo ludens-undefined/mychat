@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"gin/controllers/v1/admin"
+	"gin/app/http/controllers/v1/admin"
 
 	"github.com/gin-gonic/gin"
 )

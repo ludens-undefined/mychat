@@ -1,8 +1,8 @@
-#dsn="root:root@tcp(127.0.0.1:3306)/open_9lan_cn?charset=utf8mb4&parseTime=True&loc=Local"
+#dsn="root:root@tcp(127.0.0.1:33060)/larabbs_upgrade?charset=utf8mb4&parseTime=True&loc=Local"
 mysql:
   username: root
   password: root
   host: 127.0.0.1
-  port: 3306
-  database: open_9lan_cn
+  port: 33060
+  database: larabbs_upgrade
   charset: utf8mb4
